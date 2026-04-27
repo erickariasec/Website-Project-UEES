@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bloque Zero | Contacto</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script type="module" crossorigin src="/Website-Project-UEES/assets/main-Cm0Ux-P7.js"></script>
-  <link rel="stylesheet" crossorigin href="/Website-Project-UEES/assets/main-C5sw7vKX.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="module" crossorigin src="/Website-Project-UEES/assets/main-BD0Xhpmp.js"></script>
+  <link rel="stylesheet" crossorigin href="/Website-Project-UEES/assets/main-yM9wb3vT.css">
 </head>
 
 <body>
@@ -18,19 +19,61 @@
       <h1>Iniciemos un Proyecto</h1>
       <p>Déjanos tus datos y nos pondremos en contacto para evaluar los requerimientos tecnológicos de tu idea.</p>
 
-      <form class="formulario-base" action="#" method="POST">
+      <form class="formulario-base" id="contacto-form" novalidate>
+        <!-- Campo 1: Nombre -->
         <div class="form-group">
           <label for="nombre">Nombre o Empresa:</label>
           <input type="text" id="nombre" name="nombre" placeholder="Ej. OdontoMed">
+          <span class="error-message" id="nombre-error"></span>
         </div>
+
+        <!-- Campo 2: Email -->
         <div class="form-group">
           <label for="email">Correo Electrónico:</label>
           <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com">
+          <span class="error-message" id="email-error"></span>
         </div>
-        <button type="submit" class="btn">Solicitar Consultoría</button>
+
+        <!-- Campo 3: Teléfono -->
+        <div class="form-group">
+          <label for="telefono">Teléfono de Contacto:</label>
+          <input type="tel" id="telefono" name="telefono" placeholder="Ej. 0990069857">
+          <span class="error-message" id="telefono-error"></span>
+        </div>
+
+        <!-- Campo 4: URL del Proyecto -->
+        <div class="form-group">
+          <label for="url-proyecto">URL del Proyecto (si existe):</label>
+          <input type="url" id="url-proyecto" name="url-proyecto" placeholder="https://mi-proyecto.com">
+          <span class="error-message" id="url-proyecto-error"></span>
+        </div>
+
+        <button type="submit" class="btn" id="btn-enviar" disabled>Solicitar Consultoría</button>
+        <button type="button" class="btn btn-limpiar" id="btn-limpiar">Limpiar Formulario</button>
       </form>
+
     </section>
   </main>
+
+  <!-- Overlay de carga -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="loading-contenido">
+      <div class="spinner"></div>
+      <p id="buscando-texto">Procesando solicitud...</p>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-contenido">
+      <button type="button" class="modal-cerrar" id="modal-cerrar">&times;</button>
+      <i class="fa-solid fa-circle-check modal-icono"></i>
+      <h3>¡Solicitud Recibida!</h3>
+      <div id="resultado-contenido" class="resultado-detalle"></div>
+      <p class="resultado-mensaje">Nuestro equipo se pondrá en contacto contigo en las próximas 24 horas para evaluar los requerimientos de tu proyecto.</p>
+      <button type="button" class="btn" id="modal-btn-cerrar">Cerrar</button>
+    </div>
+  </div>
 
   <div id="footer-placeholder"></div>
 </body>
