@@ -33,6 +33,9 @@ export function initChatbot() {
     `;
 
     document.body.insertAdjacentHTML('beforeend', chatbotHTML);
+    
+    // Historial de conversación para la memoria de la IA
+    let chatHistory = []; 
 
     // 2. Lógica de interacción
     const container = document.getElementById('bz-chatbot-container');
@@ -59,21 +62,24 @@ export function initChatbot() {
         const text = inputField.value.trim();
         if (!text) return;
 
-        // Añadir mensaje del usuario al UI
+        // Añadir mensaje del usuario al UI y limpiar input
         appendMessage(text, 'user');
         inputField.value = '';
+
+        // Guardar en el historial para la memoria
+        chatHistory.push({ role: "user", content: text });
 
         // Mostrar indicador de "escribiendo..."
         const typingId = appendTypingIndicator();
 
         try {
-            // Llamar al backend en producción
+            // Llamar al backend en producción (Llama 3)
             const response = await fetch('https://api-bloquezero-gm.onrender.com/api/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message: text })
+                body: JSON.stringify({ history: chatHistory })
             });
 
             if (!response.ok) throw new Error('Error en la red');
@@ -83,6 +89,9 @@ export function initChatbot() {
             // Eliminar indicador y mostrar respuesta
             removeMessage(typingId);
             appendMessage(data.reply, 'bot');
+
+            // Guardar respuesta del bot en el historial
+            chatHistory.push({ role: "assistant", content: data.reply });
 
         } catch (error) {
             console.error('Error:', error);
