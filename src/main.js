@@ -1,0 +1,44 @@
+import { renderNavbar } from './components/navbar.js';
+import { renderFooter } from './components/footer.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Inyectar el navbar
+    const navbarPlaceholder = document.getElementById('navbar-placeholder');
+    if (navbarPlaceholder) {
+        navbarPlaceholder.innerHTML = renderNavbar();
+    }
+
+    // Inyectar el footer
+    const footerPlaceholder = document.getElementById('footer-placeholder');
+    if (footerPlaceholder) {
+        footerPlaceholder.innerHTML = renderFooter();
+    }
+
+    // Lógica del botón hamburguesa
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navbar = document.querySelector('.navbar');
+
+    if (menuToggle && navbar) {
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navbar.classList.toggle('active');
+        });
+    }
+
+    // Cargar script de validación solo en la página de contacto
+    const formulario = document.querySelector('#contacto-form');
+    if (formulario) {
+        import('./js/script.js');
+    }
+
+    // Cargar lógica del cotizador si existe en la página
+    const formCotizador = document.querySelector('#form-cotizador');
+    if (formCotizador) {
+        import('./js/cotizador.js');
+    }
+
+    // Inicializar Chatbot de IA
+    import('./components/chatbot.js').then(module => {
+        module.initChatbot();
+    }).catch(err => console.error("Error cargando el chatbot", err));
+});
